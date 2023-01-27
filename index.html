@@ -44,17 +44,17 @@
         </div>
       </aside>
 
-      <div class="col-lg-9 pb-3 d-none">
+      <div class="col-lg-9 pb-3 d-none" id="weather-main">
         <section id="today" class="mt-3" role="region" aria-live="polite">
           <div class="card">
-            <div class="card-header">Today</div>
+            <div class="card-header"><h3>Today</h3></div>
             <div class="card-body">
               <div class="row">
-                <div class="col-3"><img src="" class="current-condition-image"></div>
+                <div class="col-3"><img src="" id="current-condition-image"></div>
                 <div class="col-9">
-                  <p>Temp: </p>
-                  <p>Windspeed: </p>
-                  <p>Humidity: </p>
+                  <p>Temp: <span id="current-temp"></span>°C</p>
+                  <p>Windspeed: <span id="current-wind"></span> mph</p>
+                  <p>Humidity: <span id="current-humid"></span>%</p>
                 </div>
               </div>
             </div>
@@ -62,7 +62,7 @@
         </section>
         <section id="forecast" class="mt-3" role="region" aria-live="polite">
           <div class="card">
-            <div class="card-header">Forecast</div>
+            <div class="card-header"><h3>Forecast</h3></div>
             <div class="card-body">
               <div class="card-deck">
                 <div class="card">
