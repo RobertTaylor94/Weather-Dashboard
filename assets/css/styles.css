@@ -2,6 +2,18 @@ body {
     background-color: #87CEEB !important;
 }
 
+.card-body {
+    background-color: #80bfd9;
+}
+
+.card-header {
+    background-color: #42748a !important;
+}
+
+h3 {
+    color: white;
+}
+
 #search-button {
     margin: 10px 0px 0px 0px;
     border-radius: 5px;
