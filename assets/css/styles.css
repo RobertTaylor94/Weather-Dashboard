@@ -8,6 +8,10 @@ body {
     width: 100% !important;
 }
 
+#clear-button {
+    width: 100%;
+}
+
 .input-group-append {
     width: 100%;
 }
