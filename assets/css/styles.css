@@ -1,0 +1,14 @@
+#search-button {
+    margin: 10px 0px 0px 0px;
+    border-radius: 5px;
+    width: 100% !important;
+}
+
+.input-group-append {
+    width: 100%;
+}
+
+#search-input {
+    width: 100%;
+    height: 2em;
+}
