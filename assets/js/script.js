@@ -29,14 +29,19 @@ function search(event) {
 
 function saveSearch(city) {
     let newCity = $("<button>").text(city);
-    newCity.attr("class", "btn btn-info saved-city");
+    newCity.attr("class", "btn btn-info mt-2 saved-city");
     newCity.attr("data-name", city);
     searchHistory.append(newCity);
 }
 
 function retrieveSearch(event) {
-    let cityName = $(event.target).attr("data-name");
-    
+    let savedCity = $(event.target).attr("data-name");
+    $.ajax({
+        url: queryURLCurrent + savedCity + apiKey,
+        method: "GET",
+      }).then(function (response) {
+        console.log(response);
+      });
 }
 
 //event listeners
