@@ -6,6 +6,10 @@ body {
     background-color: #80bfd9;
 }
 
+.input-group {
+    width: 100% !important;
+}
+
 .card-header {
     background-color: #42748a !important;
 }
