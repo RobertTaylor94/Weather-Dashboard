@@ -56,7 +56,7 @@ function retrieveSearch(event) {
     method: "GET",
   }).then(function (response) {
     console.log(response);
-    
+    renderCurrentWeather(response);
   });
 }
 
