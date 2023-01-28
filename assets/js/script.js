@@ -60,6 +60,7 @@ function retrieveSearch(event) {
     method: "GET",
   }).then(function (response) {
     renderCurrentWeather(response);
+    renderWeatherForecast(response);
     // updateBackground(response);
   });
 }
@@ -83,24 +84,33 @@ function renderCurrentWeather(response) {
 }
 
 function renderWeatherForecast(response) {
+  cardDeck.empty();
   for (i = 0; i < 5; i++) {
-    let date = moment().add(i+1, "d").format("Do MMMM")
-    cardDeck.append(renderForecastCard(date))
+    let forecastDate = `${moment().add(i + 1, "d").format("YYYY-MM-DD")} 12:00:00`
+    let forecast = response.list.filter(obj => obj.dt_txt === forecastDate);
+    let date = moment().add(i + 1, "d").format("Do MMMM")
+
+    console.log(forecast)
+
+    cardDeck.append(renderForecastCard(date, forecast[0]))
   }
 }
 
-function renderForecastCard(date) {
+function renderForecastCard(date, forecast) {
+  let tempInC = forecast.main.temp - 273.15;
+  let rounded = Math.round(tempInC * 10) / 10;
   let newCard = $("<div>").attr("class", "card");
   let header = $("<div>").attr("class", "card-header");
   let headerTitle = $("<h5>").text(date);
   let weatherIcon = $("<img>").attr("class", "card-img-top");
-  weatherIcon.attr("src", `http://openweathermap.org/img/wn/11d@2x.png`);
+  // let weatherIconCode = forecast.weather.icon;
+  weatherIcon.attr("src", `http://openweathermap.org/img/wn/${forecast.weather[0].icon}@2x.png`);
   let temp = $("<p>").attr("class", "card-text mx-auto");
-  temp.text(`Temp: 24°C`)
+  temp.text(`Temp: ${rounded}°C`)
   let wind = $("<p>").attr("class", "card-text mx-auto");
-  wind.text(`Wind: 2 mph`)
+  wind.text(`Wind: ${forecast.wind.speed} mph`)
   let humid = $("<p>").attr("class", "card-text mx-auto pb-2");
-  humid.text(`Humidity: 50%`)
+  humid.text(`Humidity: ${forecast.main.humidity}%`)
   header.append(headerTitle);
   newCard.append(header, weatherIcon, temp, wind, humid);
 
