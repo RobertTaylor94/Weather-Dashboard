@@ -63,20 +63,25 @@ function retrieveSearch(event) {
 }
 
 function renderCurrentWeather(response) {
-  var tempInC = response.main.temp - 273.15;
-  var rounded = Math.round(tempInC * 10) / 10;
+  let currentWeather = response.list[0]
+  let tempInC = currentWeather.main.temp - 273.15;
+  let rounded = Math.round(tempInC * 10) / 10;
 
   weatherMain.attr("class", "col-lg-9 pb-3");
-  selectedCity.text(response.name);
+  selectedCity.text(response.city.name);
   dateToday.text(moment().format("Do MMMM"));
-  iconCode = response.weather[0].icon;
+  iconCode = currentWeather.weather[0].icon;
   currentConditionIcon.attr(
     "src",
     `http://openweathermap.org/img/wn/${iconCode}@2x.png`
   );
   currentTemp.text(rounded);
-  currentHumidity.text(response.main.humidity);
-  currentWind.text(response.wind.speed);
+  currentHumidity.text(currentWeather.main.humidity);
+  currentWind.text(currentWeather.wind.speed);
+}
+
+function renderWeatherForecast(response) {
+
 }
 
 //event listeners
