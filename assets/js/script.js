@@ -10,6 +10,7 @@ let currentWind = $("#current-wind");
 let currentHumidity = $("#current-humid");
 let selectedCity = $("#city-name");
 let dateToday = $("#date-today");
+let cardDeck = $("#card-deck");
 
 //functions
 function search(event) {
@@ -34,6 +35,7 @@ function search(event) {
     //render the current weather
     renderCurrentWeather(response);
     // updateBackground(response);
+    renderWeatherForecast(response);
   });
 
   searchInput.val("");
@@ -81,7 +83,28 @@ function renderCurrentWeather(response) {
 }
 
 function renderWeatherForecast(response) {
+  for (i = 0; i < 5; i++) {
+    let date = moment().add(i+1, "d").format("Do MMMM")
+    cardDeck.append(renderForecastCard(date))
+  }
+}
 
+function renderForecastCard(date) {
+  let newCard = $("<div>").attr("class", "card");
+  let header = $("<div>").attr("class", "card-header");
+  let headerTitle = $("<h5>").text(date);
+  let weatherIcon = $("<img>").attr("class", "card-img-top");
+  weatherIcon.attr("src", `http://openweathermap.org/img/wn/11d@2x.png`);
+  let temp = $("<p>").attr("class", "card-text mx-auto");
+  temp.text(`Temp: 24°C`)
+  let wind = $("<p>").attr("class", "card-text mx-auto");
+  wind.text(`Wind: 2 mph`)
+  let humid = $("<p>").attr("class", "card-text mx-auto pb-2");
+  humid.text(`Humidity: 50%`)
+  header.append(headerTitle);
+  newCard.append(header, weatherIcon, temp, wind, humid);
+
+  return newCard;
 }
 
 //event listeners
