@@ -8,6 +8,7 @@ let currentConditionIcon = $("#current-condition-image");
 let currentTemp = $("#current-temp");
 let currentWind = $("#current-wind");
 let currentHumidity = $("#current-humid");
+let selectedCity = $("#city-name");
 
 //functions
 function search(event) {
@@ -25,8 +26,11 @@ function search(event) {
     url: queryURLCurrent + cityName + apiKey,
     method: "GET",
   }).then(function (response) {
+    //show the clear button when a city is in the history
     clearButton.attr("class", "btn btn-danger");
+    //save the search
     saveSearch(cityName);
+    //render the current weather
     renderCurrentWeather(response);
   });
 
@@ -52,6 +56,7 @@ function retrieveSearch(event) {
     method: "GET",
   }).then(function (response) {
     console.log(response);
+    
   });
 }
 
@@ -63,14 +68,18 @@ function renderCurrentWeather(response) {
   console.log(response.weather[0].icon);
 
   var tempInC = response.main.temp - 273.15;
-  var rounded = Math.round(tempInC * 10) / 10
+  var rounded = Math.round(tempInC * 10) / 10;
 
-    weatherMain.attr("class", "col-lg-9 pb-3");
-    iconCode = response.weather[0].icon;
-    currentConditionIcon.attr("src", `http://openweathermap.org/img/wn/${iconCode}@2x.png`);
-    currentTemp.text(rounded);
-    currentHumidity.text(response.main.humidity);
-    currentWind.text(response.wind.speed);
+  weatherMain.attr("class", "col-lg-9 pb-3");
+  selectedCity.text(response.name);
+  iconCode = response.weather[0].icon;
+  currentConditionIcon.attr(
+    "src",
+    `http://openweathermap.org/img/wn/${iconCode}@2x.png`
+  );
+  currentTemp.text(rounded);
+  currentHumidity.text(response.main.humidity);
+  currentWind.text(response.wind.speed);
 }
 
 //event listeners
@@ -80,6 +89,7 @@ clearButton.on("click", function (event) {
   event.preventDefault();
   //remove all saved searches
   searchHistory.empty();
-  //hide the clear button when the search history is empty
+  //hide the clear button and weather when the search history is empty
   clearButton.attr("class", "btn btn-danger d-none");
+  weatherMain.attr("class", "col-lg-9 pb-3 d-none");
 });
