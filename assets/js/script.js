@@ -66,6 +66,7 @@ function retrieveSearch(event) {
 }
 
 function renderCurrentWeather(response) {
+  console.log(response);
   let currentWeather = response.list[0]
   let tempInC = currentWeather.main.temp - 273.15;
   let rounded = Math.round(tempInC * 10) / 10;
