@@ -9,6 +9,7 @@ let currentTemp = $("#current-temp");
 let currentWind = $("#current-wind");
 let currentHumidity = $("#current-humid");
 let selectedCity = $("#city-name");
+let dateToday = $("#date-today");
 
 //functions
 function search(event) {
@@ -32,6 +33,7 @@ function search(event) {
     saveSearch(cityName);
     //render the current weather
     renderCurrentWeather(response);
+    // updateBackground(response);
   });
 
   searchInput.val("");
@@ -55,23 +57,18 @@ function retrieveSearch(event) {
     url: queryURLCurrent + savedCity + apiKey,
     method: "GET",
   }).then(function (response) {
-    console.log(response);
     renderCurrentWeather(response);
+    // updateBackground(response);
   });
 }
 
 function renderCurrentWeather(response) {
-  console.log(response.main.temp);
-  console.log(response.main.humidity);
-  console.log(response.weather[0].description);
-  console.log(response.wind.speed);
-  console.log(response.weather[0].icon);
-
   var tempInC = response.main.temp - 273.15;
   var rounded = Math.round(tempInC * 10) / 10;
 
   weatherMain.attr("class", "col-lg-9 pb-3");
   selectedCity.text(response.name);
+  dateToday.text(moment().format("Do MMMM"));
   iconCode = response.weather[0].icon;
   currentConditionIcon.attr(
     "src",
