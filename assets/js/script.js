@@ -20,6 +20,7 @@ function init() {
   //get the saved cities from local storage
   savedCities = JSON.parse(localStorage.getItem("cities"));
   if (savedCities === null) {
+    savedCities = [];
     return;
   } else {
     //render the saved cities
@@ -40,22 +41,22 @@ function search(event) {
     return;
   }
 
-  savedCities.push(cityName);
-  localStorage.setItem("cities", JSON.stringify(savedCities));
-
   //run the API request with the city name to get current weather
   $.ajax({
     url: queryURLCurrent + cityName + apiKey,
-    method: "GET"
+    method: "GET",
   }).then(function (response) {
-    //show the clear button when a city is in the history
-    clearButton.attr("class", "btn btn-danger");
-    //save the search
-    saveSearch(cityName);
-    //render the current weather
-    renderCurrentWeather(response);
-    // updateBackground(response);
-    renderWeatherForecast(response);
+      //saves city searched for in an array and to local storage
+      savedCities.push(cityName);
+      localStorage.setItem("cities", JSON.stringify(savedCities));
+      //show the clear button when a city is in the history
+      clearButton.attr("class", "btn btn-danger");
+      //save the search
+      saveSearch(cityName);
+      //render the current weather
+      renderCurrentWeather(response);
+      // updateBackground(response);
+      renderWeatherForecast(response);
   });
 
   searchInput.val("");
@@ -86,7 +87,7 @@ function retrieveSearch(event) {
 
 function renderCurrentWeather(response) {
   console.log(response);
-  let currentWeather = response.list[0]
+  let currentWeather = response.list[0];
   let tempInC = currentWeather.main.temp - 273.15;
   let rounded = Math.round(tempInC * 10) / 10;
 
@@ -106,11 +107,15 @@ function renderCurrentWeather(response) {
 function renderWeatherForecast(response) {
   cardDeck.empty();
   for (i = 0; i < 5; i++) {
-    let forecastDate = `${moment().add(i + 1, "d").format("YYYY-MM-DD")} 12:00:00`
-    let forecast = response.list.filter(obj => obj.dt_txt === forecastDate);
-    let date = moment().add(i + 1, "d").format("Do MMMM")
+    let forecastDate = `${moment()
+      .add(i + 1, "d")
+      .format("YYYY-MM-DD")} 12:00:00`;
+    let forecast = response.list.filter((obj) => obj.dt_txt === forecastDate);
+    let date = moment()
+      .add(i + 1, "d")
+      .format("Do MMMM");
 
-    cardDeck.append(renderForecastCard(date, forecast[0]))
+    cardDeck.append(renderForecastCard(date, forecast[0]));
   }
 }
 
@@ -121,13 +126,16 @@ function renderForecastCard(date, forecast) {
   let header = $("<div>").attr("class", "card-header");
   let headerTitle = $("<h5>").text(date);
   let weatherIcon = $("<img>").attr("class", "card-img-top");
-  weatherIcon.attr("src", `http://openweathermap.org/img/wn/${forecast.weather[0].icon}@2x.png`);
+  weatherIcon.attr(
+    "src",
+    `http://openweathermap.org/img/wn/${forecast.weather[0].icon}@2x.png`
+  );
   let temp = $("<p>").attr("class", "card-text mx-auto");
-  temp.text(`Temp: ${rounded}°C`)
+  temp.text(`Temp: ${rounded}°C`);
   let wind = $("<p>").attr("class", "card-text mx-auto");
-  wind.text(`Wind: ${forecast.wind.speed} mph`)
+  wind.text(`Wind: ${forecast.wind.speed} mph`);
   let humid = $("<p>").attr("class", "card-text mx-auto pb-2");
-  humid.text(`Humidity: ${forecast.main.humidity}%`)
+  humid.text(`Humidity: ${forecast.main.humidity}%`);
   header.append(headerTitle);
   newCard.append(header, weatherIcon, temp, wind, humid);
 
@@ -142,7 +150,7 @@ function clearHistory(event) {
   //hide the clear button and weather when the search history is empty
   clearButton.attr("class", "btn btn-danger d-none");
   weatherMain.attr("class", "col-lg-9 pb-3 d-none");
-};
+}
 
 //event listeners
 searchButton.on("click", search);
