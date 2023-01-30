@@ -123,7 +123,7 @@ function renderWeatherForecast(response) {
 function renderForecastCard(date, forecast) {
   let tempInC = forecast.main.temp - 273.15;
   let rounded = Math.round(tempInC * 10) / 10;
-  let newCard = $("<div>").attr("class", "card");
+  let newCard = $("<div>").attr("class", " col-lg-2 col-md-5 m-2 p-0 card");
   let header = $("<div>").attr("class", "card-header");
   let headerTitle = $("<h5>").text(date);
   let weatherIcon = $("<img>").attr("class", "card-img-top");
