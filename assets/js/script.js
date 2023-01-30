@@ -23,6 +23,7 @@ function init() {
     savedCities = [];
     return;
   } else {
+    clearButton.attr("class", "btn btn-danger");
     //render the saved cities
     for (i = 0; i < savedCities.length; i++) {
       saveSearch(savedCities[i]);
@@ -86,7 +87,7 @@ function retrieveSearch(event) {
 }
 
 function renderCurrentWeather(response) {
-  console.log(response);
+  updateBackground(response);
   let currentWeather = response.list[0];
   let tempInC = currentWeather.main.temp - 273.15;
   let rounded = Math.round(tempInC * 10) / 10;
