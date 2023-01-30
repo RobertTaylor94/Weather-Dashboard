@@ -12,6 +12,23 @@ let selectedCity = $("#city-name");
 let dateToday = $("#date-today");
 let cardDeck = $("#card-deck");
 
+let savedCities = [];
+
+init();
+
+function init() {
+  //get the saved cities from local storage
+  savedCities = JSON.parse(localStorage.getItem("cities"));
+  if (savedCities === null) {
+    return;
+  } else {
+    //render the saved cities
+    for (i = 0; i < savedCities.length; i++) {
+      saveSearch(savedCities[i]);
+    }
+  }
+}
+
 //functions
 function search(event) {
   event.preventDefault();
@@ -23,10 +40,13 @@ function search(event) {
     return;
   }
 
+  savedCities.push(cityName);
+  localStorage.setItem("cities", JSON.stringify(savedCities));
+
   //run the API request with the city name to get current weather
   $.ajax({
     url: queryURLCurrent + cityName + apiKey,
-    method: "GET",
+    method: "GET"
   }).then(function (response) {
     //show the clear button when a city is in the history
     clearButton.attr("class", "btn btn-danger");
@@ -61,7 +81,6 @@ function retrieveSearch(event) {
   }).then(function (response) {
     renderCurrentWeather(response);
     renderWeatherForecast(response);
-    // updateBackground(response);
   });
 }
 
@@ -91,8 +110,6 @@ function renderWeatherForecast(response) {
     let forecast = response.list.filter(obj => obj.dt_txt === forecastDate);
     let date = moment().add(i + 1, "d").format("Do MMMM")
 
-    console.log(forecast)
-
     cardDeck.append(renderForecastCard(date, forecast[0]))
   }
 }
@@ -104,7 +121,6 @@ function renderForecastCard(date, forecast) {
   let header = $("<div>").attr("class", "card-header");
   let headerTitle = $("<h5>").text(date);
   let weatherIcon = $("<img>").attr("class", "card-img-top");
-  // let weatherIconCode = forecast.weather.icon;
   weatherIcon.attr("src", `http://openweathermap.org/img/wn/${forecast.weather[0].icon}@2x.png`);
   let temp = $("<p>").attr("class", "card-text mx-auto");
   temp.text(`Temp: ${rounded}°C`)
@@ -118,14 +134,17 @@ function renderForecastCard(date, forecast) {
   return newCard;
 }
 
-//event listeners
-searchButton.on("click", search);
-searchHistory.on("click", ".saved-city", retrieveSearch);
-clearButton.on("click", function (event) {
+function clearHistory(event) {
   event.preventDefault();
-  //remove all saved searches
+  //remove all saved searches from screen and local storage
   searchHistory.empty();
+  localStorage.removeItem("cities");
   //hide the clear button and weather when the search history is empty
   clearButton.attr("class", "btn btn-danger d-none");
   weatherMain.attr("class", "col-lg-9 pb-3 d-none");
-});
+};
+
+//event listeners
+searchButton.on("click", search);
+searchHistory.on("click", ".saved-city", retrieveSearch);
+clearButton.on("click", clearHistory);
