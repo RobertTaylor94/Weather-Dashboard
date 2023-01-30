@@ -22,7 +22,7 @@ function updateBackground(response) {
             break;
         case "Clear":
             console.log("Clear");
-            currentCardBody.css("background-color", "#6de3d5");
+            currentCardBody.css("background-color", "#80bfd9");
             break;
         case "Clouds":
             console.log("Clouds");
