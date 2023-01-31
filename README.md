@@ -29,4 +29,4 @@ I also wanted to implement some extra functionality in the site and change the b
 ## Deployed Site
 [Weather Dashboard](https://roberttaylor94.github.io/Weather-Dashboard/)
 
-<img src="assets/images/screenshot.png" width="400">
+<img src="assets/images/screenshot.png" width="800">
